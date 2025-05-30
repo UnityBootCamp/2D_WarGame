@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 05.Wizard
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 6453457581152224446, guid: e407be94d91d972498bb3cc772aeb9de, type: 3}
-  <UnitPortrait>k__BackingField: {fileID: 21300000, guid: dde8e78c085f1c04f8c77ab926d59281, type: 3}
-  <UnitType>k__BackingField: 4
   <Cost>k__BackingField: 250
   <SpawnCoolDown>k__BackingField: 4
-  <Hp>k__BackingField: 3
+  <Hp>k__BackingField: 200
   <AttackForce>k__BackingField: 3
   <MoveSpeed>k__BackingField: 2
   <AttackDelay>k__BackingField: 3
+  <UnitPortrait>k__BackingField: {fileID: 21300000, guid: dde8e78c085f1c04f8c77ab926d59281, type: 3}
+  <UnitType>k__BackingField: 4

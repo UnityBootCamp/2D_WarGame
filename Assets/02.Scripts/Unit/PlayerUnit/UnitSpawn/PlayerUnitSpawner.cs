@@ -57,6 +57,7 @@ public class PlayerUnitSpawner : UnitSpawner<PlayerUnitData>
 
         }
 
+        GameManager.Instance.TotalSpawn++;
 
     }
 

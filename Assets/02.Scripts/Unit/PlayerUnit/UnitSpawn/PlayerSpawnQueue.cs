@@ -6,6 +6,9 @@ public class PlayerSpawnQueue : SpawnQueue<PlayerUnitData>
 
     private void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+
         if (_queue.Count != 0 && _nextSpawnUnit == null)
         {
             StartCoroutine(C_SpawnCool());

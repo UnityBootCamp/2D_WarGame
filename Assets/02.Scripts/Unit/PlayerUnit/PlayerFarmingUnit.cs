@@ -31,7 +31,10 @@ public class PlayerFarmingUnit : MonoBehaviour
 
     private void Update()
     {
-        if(IsHoldMineral == false && transform.position.x > -21f)
+        if (GameManager.Instance.IsGameOver)
+            return;
+
+        if (IsHoldMineral == false && transform.position.x > -21f)
         {
             transform.parent.Translate(Vector3.left * _moveSpeed * Time.deltaTime);
             transform.parent.localScale = new Vector3(1.5f, 1.5f, 1.5f);

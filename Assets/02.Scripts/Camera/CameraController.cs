@@ -11,6 +11,10 @@ public class CameraController : MonoBehaviour
     
     private void Update()
     {
+
+        if (GameManager.Instance.IsGameOver)
+            return;
+
         Vector3 newPos = transform.position + _moveDir * CAMERA_MOVE_SPEED * Time.deltaTime;
 
         float newPosX = Mathf.Clamp(newPos.x, -CAMERA_BOUND, CAMERA_BOUND);

@@ -37,10 +37,11 @@ public class PlayerSpawnQueueUI : MonoBehaviour
         //≥Û∫Œ
         if (index == 0)
         {
-            if (WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnFarmingUnit
-                && PlayerSpawnManager.Instance.Mineral - PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost>=0)
+            if (PlayerSpawnManager.Instance.SpawnQueueUI.WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnFarmingUnit
+                    && PlayerSpawnManager.Instance.Mineral - PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost >= 0)
             {
                 PlayerSpawnManager.Instance.Mineral -= PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost;
+
 
                 _unitPortrait = PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].UnitPortrait;
                 _unitPortraits[WaitingUnits].sprite = _unitPortrait;
@@ -49,12 +50,11 @@ public class PlayerSpawnQueueUI : MonoBehaviour
                 PlayerSpawnManager.Instance.UnitList.UnitsCount[index]++;
                 PlayerSpawnManager.Instance.UpdateFarmingUnitResourceUI();
             }
-            
         }
         //¿¸≈ı ¿Ø¥÷
         else
         {
-            if (WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnUnit
+            if (PlayerSpawnManager.Instance.SpawnQueueUI.WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnUnit
                  && PlayerSpawnManager.Instance.Mineral - PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost >= 0)
             {
                 PlayerSpawnManager.Instance.Mineral -= PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost;
@@ -65,7 +65,6 @@ public class PlayerSpawnQueueUI : MonoBehaviour
                 WaitingUnits++;
                 PlayerSpawnManager.Instance.UnitList.UnitsCount[index]++;
                 PlayerSpawnManager.Instance.UpdateUnitResourceUI();
-
             }
         }
 

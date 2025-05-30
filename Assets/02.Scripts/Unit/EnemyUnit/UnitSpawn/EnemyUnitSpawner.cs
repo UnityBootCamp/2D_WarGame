@@ -39,6 +39,9 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
 
     private void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+
         // 지정된 스폰쿨이 지났고, 가장 싼 유닛을 생산할 정도의 미네랄을 소유하고 있다면
         if (EnemySpawnManager.Instance.EnemyMineral>= Units[0].Cost&& _isOnSpawnCool && EnemySpawnManager.Instance.IsCanSpawnUnit)
         {
