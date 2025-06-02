@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 06.Knight
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 1337188596965981974, guid: 3f756ff19c15ac84b9476779ad538317, type: 3}
-  <Cost>k__BackingField: 300
-  <SpawnCoolDown>k__BackingField: 1
-  <Hp>k__BackingField: 500
-  <AttackForce>k__BackingField: 250
+  <Cost>k__BackingField: 3000
+  <SpawnCoolDown>k__BackingField: 30
+  <Hp>k__BackingField: 200
+  <AttackForce>k__BackingField: 50
   <MoveSpeed>k__BackingField: 6
-  <AttackDelay>k__BackingField: 2
+  <AttackDelay>k__BackingField: 1.8
   <UnitPortrait>k__BackingField: {fileID: 21300000, guid: c143606c846add8458d2ed9fa9e3a2de, type: 3}
   <UnitType>k__BackingField: 5

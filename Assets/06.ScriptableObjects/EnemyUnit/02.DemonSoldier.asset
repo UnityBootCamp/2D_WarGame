@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 02.DemonSoldier
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 1166826240338910657, guid: 6f2425575ff8fa44f8544d1624fd27ae, type: 3}
-  <Cost>k__BackingField: 100
-  <SpawnCoolDown>k__BackingField: 1
-  <Hp>k__BackingField: 500
-  <AttackForce>k__BackingField: 1
+  <Cost>k__BackingField: 500
+  <SpawnCoolDown>k__BackingField: 5
+  <Hp>k__BackingField: 20
+  <AttackForce>k__BackingField: 3
   <MoveSpeed>k__BackingField: 2
   <AttackDelay>k__BackingField: 1
   <UnitType>k__BackingField: 1
-  <Weight>k__BackingField: 4
+  <Weight>k__BackingField: 7

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 01.DemonPawn
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 4153678085722046744, guid: 21bb6fdb1984ca64eb8598b596db1928, type: 3}
-  <Cost>k__BackingField: 50
-  <SpawnCoolDown>k__BackingField: 1
-  <Hp>k__BackingField: 500
+  <Cost>k__BackingField: 100
+  <SpawnCoolDown>k__BackingField: 2
+  <Hp>k__BackingField: 5
   <AttackForce>k__BackingField: 1
   <MoveSpeed>k__BackingField: 2
   <AttackDelay>k__BackingField: 1

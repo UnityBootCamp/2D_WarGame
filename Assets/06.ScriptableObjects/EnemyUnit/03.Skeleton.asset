@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 03.Skeleton
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 9218805825775195524, guid: ba7868f790a31444c9ca5ed85155c9e3, type: 3}
-  <Cost>k__BackingField: 150
-  <SpawnCoolDown>k__BackingField: 1
-  <Hp>k__BackingField: 1
-  <AttackForce>k__BackingField: 50
+  <Cost>k__BackingField: 700
+  <SpawnCoolDown>k__BackingField: 7
+  <Hp>k__BackingField: 15
+  <AttackForce>k__BackingField: 4
   <MoveSpeed>k__BackingField: 2
-  <AttackDelay>k__BackingField: 1
+  <AttackDelay>k__BackingField: 3
   <UnitType>k__BackingField: 2
-  <Weight>k__BackingField: 500
+  <Weight>k__BackingField: 7

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 03.Archer
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 734299766077738738, guid: e2336c19f5bb5aa478cad3ee63356d27, type: 3}
-  <Cost>k__BackingField: 150
-  <SpawnCoolDown>k__BackingField: 3
-  <Hp>k__BackingField: 200
-  <AttackForce>k__BackingField: 3
+  <Cost>k__BackingField: 300
+  <SpawnCoolDown>k__BackingField: 5
+  <Hp>k__BackingField: 10
+  <AttackForce>k__BackingField: 7
   <MoveSpeed>k__BackingField: 4
-  <AttackDelay>k__BackingField: 3
+  <AttackDelay>k__BackingField: 2
   <UnitPortrait>k__BackingField: {fileID: 21300000, guid: 6b2f874dcefc11f48a4730fc124519b3, type: 3}
   <UnitType>k__BackingField: 2

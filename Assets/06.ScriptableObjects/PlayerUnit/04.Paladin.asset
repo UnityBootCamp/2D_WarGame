@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 04.Paladin
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 7919947515060309748, guid: f1ba2932cb2ff84459ca7c5b7d892897, type: 3}
-  <UnitPortrait>k__BackingField: {fileID: 21300000, guid: bdfc38b08c75e5147a774697137657b3, type: 3}
-  <UnitType>k__BackingField: 3
-  <Cost>k__BackingField: 200
-  <SpawnCoolDown>k__BackingField: 4
-  <Hp>k__BackingField: 3
-  <AttackForce>k__BackingField: 3
+  <Cost>k__BackingField: 1000
+  <SpawnCoolDown>k__BackingField: 12
+  <Hp>k__BackingField: 100
+  <AttackForce>k__BackingField: 5
   <MoveSpeed>k__BackingField: 2
   <AttackDelay>k__BackingField: 3
+  <UnitPortrait>k__BackingField: {fileID: 21300000, guid: bdfc38b08c75e5147a774697137657b3, type: 3}
+  <UnitType>k__BackingField: 3
