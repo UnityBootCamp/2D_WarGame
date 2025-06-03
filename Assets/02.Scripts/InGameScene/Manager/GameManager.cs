@@ -6,9 +6,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public SettingUI OptionaPanel => _settingPanel;
+    public UIExplainUI ExplainPanel => _explainPanel;
+    public static GameManager Instance => _instance;
+
+
+    
+    // 패널 참조
     [SerializeField] GameObject _clearPanel;        // 클리어 시 출력하는 패널
     [SerializeField] GameObject _youLosePanel;      // 패배 시 출력하는 패널
-    [SerializeField] Image _sceneChangePanel;  // 화면전환 패널
+    [SerializeField] Image _sceneChangePanel;       // 화면전환 패널
+    [SerializeField] SettingUI _settingPanel;        // 옵션 패널
+    [SerializeField] UIExplainUI _explainPanel;
 
 
     [SerializeField] DifficultyData[] DifficultyDatas;      // 난이도 관련 데이터. 0 = easy, 1 = normal, 2 = hard
@@ -19,27 +28,49 @@ public class GameManager : MonoBehaviour
 
     const float FADE_DURATION = 0.5f;
 
-   
+
+    static GameManager _instance;
 
 
-
-    static GameManager _instance;                   
-    public static GameManager Instance => _instance;
 
     private void Awake()
     {
 
         _sceneChangePanel.gameObject.SetActive(true);   // 로딩을 위한 화면 암흑처리
+        _settingPanel.OnStart();
+        _explainPanel.OnStart();
+        
         StartCoroutine(C_SceneChange());
 
 
         _instance = this;
         IsGameOver = false;
         DifficultyData = DifficultyDatas[PlayerPrefs.GetInt("Difficulty")];
+
+        // 패널 비활성화
+        _settingPanel.gameObject.SetActive(false);
         _clearPanel.SetActive(false);
         _youLosePanel.SetActive(false);
     }
 
+    public void GameStart()
+    {
+        Time.timeScale = 1;
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        _settingPanel.gameObject.SetActive(false);
+
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        _settingPanel.gameObject.SetActive(true);
+
+    }
 
     // 점수 계산 메서드
     public int calcScore()
@@ -145,5 +176,6 @@ public class GameManager : MonoBehaviour
 
         _sceneChangePanel.gameObject.SetActive(false);
         _sceneChangePanel.color = Color.black;
+        Time.timeScale = 0;
     }
 }
