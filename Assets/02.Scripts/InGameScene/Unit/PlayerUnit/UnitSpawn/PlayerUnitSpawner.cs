@@ -12,7 +12,9 @@ public class PlayerUnitSpawner : UnitSpawner<PlayerUnitData>
     protected override void Start()
     {
         base.Start();
+
         MaxFarmingUnitCount = 10;
+
         PlayerSpawnManager.Instance.UpdateFarmingUnitResourceUI();
         PlayerSpawnManager.Instance.UpdateUnitResourceUI();
         
