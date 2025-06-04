@@ -48,7 +48,7 @@ public class PlayerSpawnManager : MonoBehaviour
     {
         _instance = this;
 
-        Mineral = 800000;      // 초기 미네랄
+        Mineral = 150;      // 초기 미네랄
 
         PlayerSpawnQueue = GetComponent<PlayerSpawnQueue>();
         PlayerUnitSpawner = GetComponent<PlayerUnitSpawner>();

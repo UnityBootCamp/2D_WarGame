@@ -53,7 +53,7 @@ public class LongRangeAttack : MonoBehaviour
 
         SoundManager.Instance.SummonMeteor();
 
-        while (meteor.transform.position.y >= oppositeUnitPos.y)
+        while (meteor.transform.position.y >= oppositeUnitPos.y+1)
         {
             meteor.transform.position += Vector3.down * Time.deltaTime * (_meteorPosY / (attackDelay/2));
 

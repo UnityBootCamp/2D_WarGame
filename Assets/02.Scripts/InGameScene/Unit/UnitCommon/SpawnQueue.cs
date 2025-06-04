@@ -11,8 +11,6 @@ public class SpawnQueue<T> : MonoBehaviour
     public Queue<T> Queue => _queue;
 
 
-
-
     private void Awake()
     {
         _queue = new Queue<T>(5);

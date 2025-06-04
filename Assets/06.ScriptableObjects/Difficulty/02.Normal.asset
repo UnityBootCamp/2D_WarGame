@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 02.Normal
   m_EditorClassIdentifier: 
   <DifficultyCoefficient>k__BackingField: 1.5
-  <EnemyMineralEarn>k__BackingField: 20
+  <EnemyMineralEarn>k__BackingField: 30
   <EnemyHomeHp>k__BackingField: 400
