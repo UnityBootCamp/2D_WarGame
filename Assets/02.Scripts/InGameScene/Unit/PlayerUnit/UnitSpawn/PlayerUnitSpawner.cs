@@ -2,18 +2,33 @@ using UnityEngine;
 
 public class PlayerUnitSpawner : UnitSpawner<PlayerUnitData>
 {
-    // 유닛 스폰이 가능한지 아닌지 판별을 위한 필드
-    public int MaxFarmingUnitCount;         // 일꾼 유닛
+    // Properties
+    public float UnitUpgradeCost => _unitUpgradeCost;
+    public float MaxFarmingUnitCount => _maxFarmingUnitCount;
+    public float HealthUpgradeValue => _healthUpgradeValue;
+    public float AttackUpgradeValue => _attackUpgradeValue;
 
+    // Field
+    int _maxFarmingUnitCount;         // 일꾼 유닛 최대 인구수
+    float _unitUpgradeCost;           // 업그레이드 비용
+    float _healthUpgradeValue;        // 체력 업그레이드 수치
+    float _attackUpgradeValue;        // 공격 업그레이드 수치
 
     Vector3 _spawnPos = new Vector3(-15f, -3.1f, 0f);
     public PlayerUnit PrevUnit;
+
+
+    // UnityLifeCycle
+    private void Awake()
+    {
+        _unitUpgradeCost = 4000f;   
+    }
 
     protected override void Start()
     {
         base.Start();
 
-        MaxFarmingUnitCount = 10;
+        _maxFarmingUnitCount = 10;
 
         PlayerSpawnManager.Instance.UpdateFarmingUnitResourceUI();
         PlayerSpawnManager.Instance.UpdateUnitResourceUI();
@@ -23,12 +38,33 @@ public class PlayerUnitSpawner : UnitSpawner<PlayerUnitData>
         {
             PoolManager.Instance.CreatePool(_units[i].UnitType.ToString(),  () => Instantiate(_units[i].UnitPrefab, _spawnPos, Quaternion.identity));
         }
-
-
-
     }
 
     
+    // Methods
+    public void UpgradeMaxUnit()
+    {
+        _maxUnitCount += 5;
+        _maxFarmingUnitCount += 10;
+    }
+
+    public void HealthUpgrade()
+    {
+        if (_healthUpgradeValue >= 10 || PlayerSpawnManager.Instance.Mineral < UnitUpgradeCost)
+            return;
+
+        PlayerSpawnManager.Instance.Mineral -= _unitUpgradeCost;
+        _healthUpgradeValue++;
+    }
+
+    public void AttackUpgrade()
+    {
+        if (_attackUpgradeValue >= 10 || PlayerSpawnManager.Instance.Mineral < UnitUpgradeCost)
+            return;
+
+        PlayerSpawnManager.Instance.Mineral -= _unitUpgradeCost;
+        _attackUpgradeValue++;
+    }
 
     public void Spawn(PlayerUnitType unitType) 
     {
@@ -69,11 +105,5 @@ public class PlayerUnitSpawner : UnitSpawner<PlayerUnitData>
         }
 
         GameManager.Instance.TotalSpawn++;
-
     }
-
-    
-
-
-
 }

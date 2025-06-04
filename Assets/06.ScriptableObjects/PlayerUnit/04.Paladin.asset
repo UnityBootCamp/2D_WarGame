@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 7919947515060309748, guid: f1ba2932cb2ff84459ca7c5b7d892897, type: 3}
   <Cost>k__BackingField: 1000
-  <SpawnCoolDown>k__BackingField: 10
+  <SpawnCoolDown>k__BackingField: 8
   <Hp>k__BackingField: 110
   <AttackForce>k__BackingField: 2.5
   <MoveSpeed>k__BackingField: 2

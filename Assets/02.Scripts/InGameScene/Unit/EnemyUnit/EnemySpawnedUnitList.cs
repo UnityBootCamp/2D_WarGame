@@ -1,8 +1,6 @@
-
-
 public class EnemySpawnedUnitList : SpawnedUnitList<EnemyUnit>
 {
-
+    // Methods
     public int TotalUnitCount()
     {
         int res = 0;

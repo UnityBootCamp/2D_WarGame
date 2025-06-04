@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerSpawnQueue : SpawnQueue<PlayerUnitData>
 {
-
+    // Methods
     private void Update()
     {
         if (GameManager.Instance.IsGameOver)
@@ -32,9 +32,5 @@ public class PlayerSpawnQueue : SpawnQueue<PlayerUnitData>
 
         _queue.Dequeue();
         _nextSpawnUnit = null;
-
-
     }
-
-
 }

@@ -9,8 +9,8 @@ public class Unit<T> : MonoBehaviour
     [SerializeField] protected T _unitData;
 
     // 유닛의 기본데이터
-    protected float _hp;
-    protected float _attackForce;
+    public float _hp;                   // 테스트 이후 protected로 변경할 것
+    public float _attackForce;
     protected float _moveSpeed;
     protected float _attackDelay;
     protected Animator _unitAnim;

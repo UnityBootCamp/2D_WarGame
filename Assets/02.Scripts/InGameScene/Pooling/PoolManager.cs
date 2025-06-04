@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 싱글톤
+// 게임에 생성된 유닛들의 오브젝트 풀을 생성 관리.
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance { get; private set; }
@@ -11,7 +13,6 @@ public class PoolManager : MonoBehaviour
     // 외부에서 주입받는 프리팹 로딩 함수 (Resource, Addressables 등과 분리 가능)
     public Func<string, GameObject> resourceLoader;
 
-    // 싱글톤 초기화
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -37,7 +38,6 @@ public class PoolManager : MonoBehaviour
         poolDict.Add(key, pool);
     }
 
- 
 
     // 오브젝트를 풀에서 꺼내 반환 (경로를 통해 접근)
     public GameObject Get(string key, Action<GameObject> onGet = null)
@@ -61,16 +61,5 @@ public class PoolManager : MonoBehaviour
         }
 
         pool.Release(obj, onRelease);
-    }
-
-    // 편의 함수: 리소스 경로 기반으로 오브젝트 풀 생성
-    public void CreatePoolFromPath(string path, int preloadCount = 5)
-    {
-        CreatePool(path, () => {
-            var obj = resourceLoader?.Invoke(path);
-            if (obj == null)
-                throw new Exception($"Failed to load prefab at path: {path}");
-            return obj;
-        }, preloadCount);
     }
 }

@@ -1,24 +1,18 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
-
 
 
 public class PlayerUnit : Unit<PlayerUnitData>
 {
-
-    // 유닛의 기본데이터
-    public PlayerUnitType UnitType;
+    // Properties
     public Vector3 ThisUnitSize => _unitSize;
 
+    // Fields
+    // 유닛의 기본데이터
+    public PlayerUnitType UnitType;
 
-    // 바로 앞 유닛 관련
-    public PlayerUnit _prevUnit;
-
-    GameObject _oppositeUnit;
-
+    public PlayerUnit _prevUnit;     // 현재유닛의 선행 유닛 참조
 
     public bool isCanAttack;
     public bool isAttacking;
@@ -26,17 +20,17 @@ public class PlayerUnit : Unit<PlayerUnitData>
     Coroutine _attackCoroutine;      // 공격 애니메이션 코루틴
     Coroutine _getDamageCoroutine;   // 피격 애니메이션 코루틴
 
+    const float UPGRADE_COEFFICIENT = 0.1f;
 
 
-
+    // UnityLifeCycle
     private void OnEnable()
     {
-        IsCanMove = true;
         SetData();
+        IsCanMove = true;
         isCanAttack = true;
         _attackCoroutine = null;
     }
-
 
     private void Start()
     {
@@ -44,10 +38,31 @@ public class PlayerUnit : Unit<PlayerUnitData>
         _unitSize = PlayerUnitSize.PlayerUnitSizes[(int)UnitType];
         
     }
+   
+    private void Update()
+    {
+        if (GameManager.Instance.IsGameOver)
+            return;
 
+        // 궁수와 마법사 유닛이 상대보다 1유닛거리 떨어져 있다면
+        if (UnitType == PlayerUnitType.Archer || UnitType == PlayerUnitType.Wizard)
+        {
+            PlayerUnitAction(IsOneUnitDistance);
+        }
+
+        // 궁수 마법사가 아니라면
+        else
+        {
+            PlayerUnitAction(IsFaceOppositeUnit);
+        }
+           
+    }
+
+
+    // Methods
     public void PlayerUnitAction(Func<bool> isOppositeUnitInRange)
     {
-        
+
         // 상대 유닛과 닿아있지 않다면
         if (isOppositeUnitInRange() == false && _attackCoroutine == null && IsCanMove)
         {
@@ -80,26 +95,6 @@ public class PlayerUnit : Unit<PlayerUnitData>
                 return;
             }
         }
-    }
-
-   
-    private void Update()
-    {
-        if (GameManager.Instance.IsGameOver)
-            return;
-
-        // 궁수와 마법사 유닛이 상대보다 1유닛거리 떨어져 있다면
-        if (UnitType == PlayerUnitType.Archer || UnitType == PlayerUnitType.Wizard)
-        {
-            PlayerUnitAction(IsOneUnitDistance);
-        }
-
-        // 궁수 마법사가 아니라면
-        else
-        {
-            PlayerUnitAction(IsFaceOppositeUnit);
-        }
-           
     }
 
     // 유닛이 상대유닛과 접해있는가
@@ -184,8 +179,6 @@ public class PlayerUnit : Unit<PlayerUnitData>
 
     }
 
-
-
     public void GetDamage(float value)
     {
         _hp -= value;
@@ -203,11 +196,98 @@ public class PlayerUnit : Unit<PlayerUnitData>
             _getDamageCoroutine = StartCoroutine(C_GetDamageCoroutine());
         }
     }
+
+    public void SetPrevUnit(PlayerUnit prevUnit = null)
+    {
+        _prevUnit = prevUnit;
+
+        if (_prevUnit == null)
+        {
+            _prevUnitSize = _unitSize; 
+        }
+        else
+        {
+            _prevUnitSize = PlayerUnitSize.PlayerUnitSizes[(int)_prevUnit.UnitType];
+        }
+    }
+
+
+    void SetData()
+    {
+        UnitType = _unitData.UnitType;
+        _hp = _unitData.Hp *(1+UPGRADE_COEFFICIENT*PlayerSpawnManager.Instance.PlayerUnitSpawner.HealthUpgradeValue);
+        _attackForce = _unitData.AttackForce * (1 + UPGRADE_COEFFICIENT * PlayerSpawnManager.Instance.PlayerUnitSpawner.AttackUpgradeValue);
+        _moveSpeed = _unitData.MoveSpeed;
+        _attackDelay = _unitData.AttackDelay;
+    }
+
+
+    public void OnDeath()
+    {
+        EnemySpawnManager.Instance.EnemyMineral += PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[(int)UnitType].Cost / 4;
+        PlayerSpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] = Mathf.Max(PlayerSpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] - 1, 0);
+        PlayerSpawnManager.Instance.UpdateUnitResourceUI();
+        StartCoroutine(C_DeathCoroutine());
+    }
+
+    IEnumerator C_DeathCoroutine()
+    {
+        _unitAnim.SetBool("3_Death", true);
+        yield return new WaitForSeconds(0.5f);
+        PoolManager.Instance.Release(UnitType.ToString(), gameObject.transform.parent.gameObject);
+        PlayerSpawnManager.Instance.UnitList.DequeueUnitList();
+        if (PlayerSpawnManager.Instance.UnitList.SpawnedBattleUnit.Count == 0)
+        {
+            PlayerSpawnManager.Instance.PlayerUnitSpawner.PrevUnit = null;
+            UnitAttackManager.Instance.PlayerFirstUnit = null;
+        }
+        else
+        {
+            UnitAttackManager.Instance.PlayerFirstUnit = PlayerSpawnManager.Instance.UnitList.SpawnedBattleUnit.Peek();
+            UnitAttackManager.Instance.PlayerFirstUnit.SetPrevUnit(UnitAttackManager.Instance.PlayerFirstUnit);
+        }
+
+    }
     IEnumerator C_AttackRoutine()
     {
         isCanAttack = false;
 
+        // 궁수 유닛일 경우
+        if (UnitType == PlayerUnitType.Archer)
+        {
+            // 적의 선봉 유닛이 있으면 선봉유닛에게 화살 발사
+            if (UnitAttackManager.Instance.EnemyFirstUnit != null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.ShootArrow
+                    (_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.EnemyFirstUnit.gameObject.transform.parent.gameObject.transform.position);
+            }
+            // 적의 선봉 유닛이 없으면 적의 본진에 화살 발사
+            else if (UnitAttackManager.Instance.EnemyFirstUnit == null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.ShootArrow
+                    (_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.EnemyHome.transform.position);
+            }
+        }
+        // 마법사 유닛일 경우
+        else if (UnitType == PlayerUnitType.Wizard)
+        {
+            // 적의 선봉 유닛이 있으면 선봉유닛 머리 위에 메테오 소환
+            if (UnitAttackManager.Instance.EnemyFirstUnit != null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.SummonMeteor
+                    (_attackDelay, UnitAttackManager.Instance.EnemyFirstUnit.gameObject.transform.parent.gameObject.transform.position);
+            }
+            // 적의 선봉 유닛이 없으면 적의 본진 위에 메테오 소환
+            else if (UnitAttackManager.Instance.EnemyFirstUnit == null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.SummonMeteor(_attackDelay, UnitAttackManager.Instance.EnemyHome.transform.position);
+            }
+        }
+
+
         _unitAnim.SetTrigger("2_Attack");
+        SoundManager.Instance.PlayerUnitAttack();
+
         yield return new WaitForSeconds(_attackDelay / 2);
 
         if (UnitAttackManager.Instance.EnemyFirstUnit != null)
@@ -243,56 +323,6 @@ public class PlayerUnit : Unit<PlayerUnitData>
     }
 
 
-    public void SetPrevUnit(PlayerUnit prevUnit = null)
-    {
-        _prevUnit = prevUnit;
-
-        if (_prevUnit == null)
-        {
-            _prevUnitSize = _unitSize; 
-        }
-        else
-        {
-            _prevUnitSize = EnemyUnitSize.EnemyUnitSizes[(int)_prevUnit.UnitType];
-        }
-    }
-
-    void SetData()
-    {
-        UnitType = _unitData.UnitType;
-        _hp = _unitData.Hp;
-        _attackForce = _unitData.AttackForce;
-        _moveSpeed = _unitData.MoveSpeed;
-        _attackDelay = _unitData.AttackDelay;
-    }
-
-
-    public void OnDeath()
-    {
-        EnemySpawnManager.Instance.EnemyMineral += PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[(int)UnitType].Cost / 4;
-        PlayerSpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] = Mathf.Max(PlayerSpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] - 1, 0);
-        PlayerSpawnManager.Instance.UpdateUnitResourceUI();
-        StartCoroutine(C_DeathCoroutine());
-    }
-
-    IEnumerator C_DeathCoroutine()
-    {
-        _unitAnim.SetBool("3_Death", true);
-        yield return new WaitForSeconds(0.5f);
-        PoolManager.Instance.Release(UnitType.ToString(), gameObject.transform.parent.gameObject);
-        PlayerSpawnManager.Instance.UnitList.DequeueUnitList();
-        if (PlayerSpawnManager.Instance.UnitList.SpawnedBattleUnit.Count == 0)
-        {
-            PlayerSpawnManager.Instance.PlayerUnitSpawner.PrevUnit = null;
-            UnitAttackManager.Instance.PlayerFirstUnit = null;
-        }
-        else
-        {
-            UnitAttackManager.Instance.PlayerFirstUnit = PlayerSpawnManager.Instance.UnitList.SpawnedBattleUnit.Peek();
-            UnitAttackManager.Instance.PlayerFirstUnit.SetPrevUnit(UnitAttackManager.Instance.PlayerFirstUnit);
-        }
-
-    }
 
 
 }

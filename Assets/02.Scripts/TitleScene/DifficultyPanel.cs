@@ -10,8 +10,7 @@ public class DifficultyPanel : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-
+        _howToPlayPanel.gameObject.SetActive(false);
         _exitButton.onClick.AddListener(OnClickExitButton);
 
         for(int i = 0; i<_difficultyButtons.Length; i++)
@@ -28,6 +27,7 @@ public class DifficultyPanel : MonoBehaviour
 
     void OnClickDifficultyButton(int index)
     {
+        TitleSoundManager.Instance.ClickUI();
         PlayerPrefs.SetInt("Difficulty", index);
         Debug.Log(PlayerPrefs.GetInt("Difficulty"));
 
@@ -38,6 +38,7 @@ public class DifficultyPanel : MonoBehaviour
 
     void OnClickExitButton()
     {
+        TitleSoundManager.Instance.ClickUI();
         gameObject.SetActive(false);
     }
 

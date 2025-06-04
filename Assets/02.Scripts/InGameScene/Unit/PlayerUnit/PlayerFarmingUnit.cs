@@ -1,11 +1,10 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-
 
 
 public class PlayerFarmingUnit : MonoBehaviour
 {
+    // Fields
     [SerializeField] PlayerUnitData _unitData;
     [SerializeField] GameObject _mineral;
 
@@ -14,10 +13,11 @@ public class PlayerFarmingUnit : MonoBehaviour
     float _moveSpeed;
     Animator _unitAnim;
 
-    bool IsHoldMineral;
-    Coroutine Farming;
+    bool IsHoldMineral; // 이 유닛이 미네랄을 채취한 상태인 확인하는 bool
+    Coroutine Farming;  // 자원채취 코루틴을 저장하는 변수. 코루틴 중첩 방지
 
 
+    // UnityLifeCycle
     private void OnEnable()
     {
         SetData();
@@ -56,6 +56,7 @@ public class PlayerFarmingUnit : MonoBehaviour
         }
         else if(IsHoldMineral == true && transform.position.x >= -16f)
         {
+            SoundManager.Instance.GetResource();
             IsHoldMineral = false;
             PlayerSpawnManager.Instance.Mineral += 50;
             _mineral.SetActive(false);
@@ -63,6 +64,8 @@ public class PlayerFarmingUnit : MonoBehaviour
        
     }
 
+
+    // Methods
     IEnumerator C_Farming()
     {
         float cumulativeTime = 0f;
@@ -70,6 +73,7 @@ public class PlayerFarmingUnit : MonoBehaviour
         {
 
             _unitAnim.SetTrigger("2_Attack");
+            SoundManager.Instance.FarmingResource();
             cumulativeTime ++;
             yield return new WaitForSeconds(1f);
             

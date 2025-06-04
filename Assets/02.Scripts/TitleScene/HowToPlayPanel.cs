@@ -25,7 +25,6 @@ public class HowToPlayPanel : MonoBehaviour
     private void Awake()
     {
         _sceneChangePanel.color = new Color(0, 0, 0, 0);
-        gameObject.SetActive(false);
         _sceneChangePanel.gameObject.SetActive(false);
     }
 
@@ -52,6 +51,8 @@ public class HowToPlayPanel : MonoBehaviour
     // 오른쪽 버튼 클릭 시
     public void OnClickRightButton()
     {
+        TitleSoundManager.Instance.ClickUI();
+
         // 오른쪽 끝 페이지라면 return
         if (_pageIndex >= _pagePanel.Length-1)
             return;
@@ -79,6 +80,7 @@ public class HowToPlayPanel : MonoBehaviour
     // 왼쪽 버튼 클릭시
     public void OnClickLeftButton()
     {
+        TitleSoundManager.Instance.ClickUI();
         // 왼쪽 끝 페이지라면 return
         if (_pageIndex <= 0)
             return;
@@ -105,6 +107,8 @@ public class HowToPlayPanel : MonoBehaviour
     // play 버튼 눌렀을 때
     public void OnClickPlayButton()
     {
+
+        TitleSoundManager.Instance.ClickUI();
         StartCoroutine(C_SceneChange());
         
     }
@@ -112,6 +116,8 @@ public class HowToPlayPanel : MonoBehaviour
     // x 버튼 눌렀을 때
     void OnClickExitButton()
     {
+
+        TitleSoundManager.Instance.ClickUI();
         gameObject.SetActive(false);
     }
 

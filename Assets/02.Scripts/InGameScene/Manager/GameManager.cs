@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+// 싱글톤
+// 게임 전체에 영향을 미치는 요소들을 관리하는 매니저 클래스
+// 게임의 승리와 패배, 플레이어가 획득한 점수, 게임의 TimeScale, 난이도를 관리함.
 public class GameManager : MonoBehaviour
 {
     public SettingUI OptionaPanel => _settingPanel;
@@ -16,12 +20,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject _clearPanel;        // 클리어 시 출력하는 패널
     [SerializeField] GameObject _youLosePanel;      // 패배 시 출력하는 패널
     [SerializeField] Image _sceneChangePanel;       // 화면전환 패널
-    [SerializeField] SettingUI _settingPanel;        // 옵션 패널
-    [SerializeField] UIExplainUI _explainPanel;
+    [SerializeField] SettingUI _settingPanel;       // 옵션 패널
+    [SerializeField] UIExplainUI _explainPanel;     // 인게임 진입시 나타나는 설명 패널
 
 
     [SerializeField] DifficultyData[] DifficultyDatas;      // 난이도 관련 데이터. 0 = easy, 1 = normal, 2 = hard
     [HideInInspector] public DifficultyData DifficultyData; // 이번에 선택된 난이도 저장
+
     public bool IsGameOver;                                 // 게임오버가 되었는가
     public int TotalKill;                                   // 플레이어가 처치한 모든 적 유닛의 수
     public int TotalSpawn;                                  // 플레이어가 생성한 모든 아군 전투 유닛의 수
@@ -30,7 +35,6 @@ public class GameManager : MonoBehaviour
 
 
     static GameManager _instance;
-
 
 
     private void Awake()

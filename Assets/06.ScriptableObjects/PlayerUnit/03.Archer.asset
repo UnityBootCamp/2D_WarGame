@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49118ea13d08faa4b8c99357014c150c, type: 3}
   m_Name: 03.Archer
   m_EditorClassIdentifier: 
-  <UnitPrefab>k__BackingField: {fileID: 734299766077738738, guid: e2336c19f5bb5aa478cad3ee63356d27, type: 3}
+  <UnitPrefab>k__BackingField: {fileID: 7969364483223949021, guid: fb4a96ce61d5ec14f84217d44a208011, type: 3}
   <Cost>k__BackingField: 300
   <SpawnCoolDown>k__BackingField: 5
   <Hp>k__BackingField: 10

@@ -3,26 +3,20 @@ using System.Collections;
 using UnityEngine;
 
 
-
 public class EnemyUnit : Unit<EnemyUnitData>
 {
-
-    // 유닛의 기본데이터
-    public EnemyUnitType UnitType;
+    // Properties
     public Vector3 ThisUnitSize => _unitSize;
 
-
-
-    // 바로 앞 유닛 관련
-    public EnemyUnit _prevUnit;
-
-    bool isCanAttack;
-
-    Coroutine _attackCoroutine;
-    Coroutine _getDamageCoroutine;   // 피격 애니메이션 코루틴
+    // Fields
+    public EnemyUnitType UnitType;  // 유닛의 기본데이터
+    public EnemyUnit _prevUnit;     // 현재 유닛의 선행유닛 참조
+    bool isCanAttack;               // 공격이 가능한지에 대한 bool
+    Coroutine _attackCoroutine;      // 공격 애니메이션 코루틴 저장 변수. 
+    Coroutine _getDamageCoroutine;   // 피격 애니메이션 코루틴 저장 변수. 코루틴 변수들은 코루틴이 중첩되지 않도록 함
 
     
-
+    // UnityLifeCycle
     private void OnEnable()
     {
         IsCanMove = true;
@@ -35,34 +29,27 @@ public class EnemyUnit : Unit<EnemyUnitData>
     {
         _unitAnim = GetComponent<Animator>();
         _unitSize = EnemyUnitSize.EnemyUnitSizes[(int)UnitType];
-        
-
     }
-
 
     private void Update()
     {
         if (GameManager.Instance.IsGameOver)
             return;
 
-     
-
         // 궁수와 마법사 유닛이 상대보다 1유닛거리 떨어져 있다면
         if (UnitType == EnemyUnitType.Skeleton)
         {
             EnemyUnitAction(IsOneUnitDistance);
         }
-
         // 궁수 마법사가 아니라면
         else
         {
             EnemyUnitAction(IsFaceOppositeUnit);
         }
-
-       
-
     }
 
+
+    // Methods
     public bool IsFaceOppositeUnit()
     {
         float enemyUnitLeftBound = (transform.parent.gameObject.transform.position.x - _unitSize.x / 2);
@@ -114,7 +101,6 @@ public class EnemyUnit : Unit<EnemyUnitData>
         {
             playerUnitRightBound = (UnitAttackManager.Instance.PlayerFirstUnit.gameObject.transform.parent.gameObject.transform.position.x + UnitAttackManager.Instance.PlayerFirstUnit.ThisUnitSize.x / 2);
         }
-
 
         // 적 선봉 유닛이 이 유닛이라면,
         if (UnitAttackManager.Instance.EnemyFirstUnit == this)
@@ -203,11 +189,63 @@ public class EnemyUnit : Unit<EnemyUnitData>
         }
     }
 
+
+    public void SetPrevUnit(EnemyUnit prevUnit = null)
+    {
+        _prevUnit = prevUnit;
+
+        if (_prevUnit == null)
+        {
+            _prevUnitSize = _unitSize; 
+        }
+        else
+        {
+            _prevUnitSize = EnemyUnitSize.EnemyUnitSizes[(int)_prevUnit.UnitType];
+        }
+    }
+
+    void SetData()
+    {
+        UnitType = _unitData.UnitType;
+        _hp = _unitData.Hp * GameManager.Instance.DifficultyData.DifficultyCoefficient;                     // 체력
+        _attackForce = _unitData.AttackForce * GameManager.Instance.DifficultyData.DifficultyCoefficient;   // 공격력
+        _moveSpeed = _unitData.MoveSpeed;
+        _attackDelay = _unitData.AttackDelay;
+    }
+
+
+    public void OnDeath()
+    {
+        GameManager.Instance.TotalKill++;
+        PlayerSpawnManager.Instance.Mineral += EnemySpawnManager.Instance.EnemyUnitSpawner.Units[(int)UnitType].Cost / 4;
+        EnemySpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] = Mathf.Max(EnemySpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] - 1, 0);
+        StartCoroutine(C_DeathCoroutine());
+    }
+
     IEnumerator C_AttackRoutine()
     {
+        //스켈레톤 유닛일 경우
+        if (UnitType == EnemyUnitType.Skeleton)
+        {
+            // 적의 선봉 유닛이 있으면 선봉유닛에게 화살 발사
+            if (UnitAttackManager.Instance.PlayerFirstUnit != null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.ShootArrow
+                    (_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.PlayerFirstUnit.gameObject.transform.parent.gameObject.transform.position);
+            }
+            // 적의 선봉 유닛이 없으면 적의 본진 에 화살 발사
+            else if (UnitAttackManager.Instance.PlayerFirstUnit == null)
+            {
+                UnitAttackManager.Instance.LongRangeAttack.ShootArrow
+                    (_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.PlayerHome.transform.position);
+            }
+        }
+
         isCanAttack = false;
         _unitAnim.SetTrigger("2_Attack");
-        yield return new WaitForSeconds(_attackDelay/2);
+        SoundManager.Instance.EnemyUnitAttack();
+
+        yield return new WaitForSeconds(_attackDelay / 2);
 
         if (UnitAttackManager.Instance.PlayerFirstUnit != null)
         {
@@ -242,39 +280,6 @@ public class EnemyUnit : Unit<EnemyUnitData>
 
     }
 
-
-    public void SetPrevUnit(EnemyUnit prevUnit = null)
-    {
-        _prevUnit = prevUnit;
-
-        if (_prevUnit == null)
-        {
-            _prevUnitSize = _unitSize; 
-        }
-        else
-        {
-            _prevUnitSize = EnemyUnitSize.EnemyUnitSizes[(int)_prevUnit.UnitType];
-        }
-    }
-
-    void SetData()
-    {
-        UnitType = _unitData.UnitType;
-        _hp = _unitData.Hp * GameManager.Instance.DifficultyData.DifficultyCoefficient;                     // 체력
-        _attackForce = _unitData.AttackForce * GameManager.Instance.DifficultyData.DifficultyCoefficient;   // 공격력
-        _moveSpeed = _unitData.MoveSpeed;
-        _attackDelay = _unitData.AttackDelay;
-    }
-
-
-    public void OnDeath()
-    {
-        GameManager.Instance.TotalKill++;
-        PlayerSpawnManager.Instance.Mineral += EnemySpawnManager.Instance.EnemyUnitSpawner.Units[(int)UnitType].Cost / 4;
-        EnemySpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] = Mathf.Max(EnemySpawnManager.Instance.UnitList.UnitsCount[(int)UnitType] - 1, 0);
-        StartCoroutine(C_DeathCoroutine());
-    }
-
     IEnumerator C_DeathCoroutine()
     {
         _unitAnim.SetBool("3_Death", true);
@@ -294,6 +299,5 @@ public class EnemyUnit : Unit<EnemyUnitData>
             UnitAttackManager.Instance.EnemyFirstUnit = EnemySpawnManager.Instance.UnitList.SpawnedBattleUnit.Peek();
             UnitAttackManager.Instance.EnemyFirstUnit.SetPrevUnit(UnitAttackManager.Instance.EnemyFirstUnit);
         }
-
     }
 }

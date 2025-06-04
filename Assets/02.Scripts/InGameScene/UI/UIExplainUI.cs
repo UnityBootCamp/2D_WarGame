@@ -1,14 +1,14 @@
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIExplainUI : MonoBehaviour
 {
-
+    // Fields
     [SerializeField] Image[] _explainPanels;
     int _panelIndex;
 
-
+    
+    // Methods
     public void OnStart()
     {
         gameObject.SetActive(true);

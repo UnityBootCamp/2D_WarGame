@@ -1,35 +1,11 @@
 using TMPro;
 using UnityEngine;
 
+// 싱글톤
+// 적의 자원과 유닛 생산을 관리한다.
 public class EnemySpawnManager : MonoBehaviour
 {
-    // For Test
-    [SerializeField] TextMeshProUGUI EnemyMineralText;
-
-
-    // 적이 현재 생성한 유닛의 목록
-    public EnemySpawnedUnitList UnitList = new EnemySpawnedUnitList();
-
-
-    // 참조
-    public EnemySpawnQueue EnemySpawnQueue;       // 생산 예약 큐를 관리
-    public EnemyUnitSpawner EnemyUnitSpawner;     // 유닛 생산
-
-    // 자원관련
-    public float BaseMineralGen;                 // 초당 미네랄 획득량              
-    public float _cumlativeMineral;        // 누적된 미네랄 획득량. 적 본진이 3레벨 되기전까지 각 레벨마다 누적하며, 이 변수가
-                                         // 업그레이드 비용의 4배를 누적하면 적은 본진을 업그레이드하고 초기화. 테스트 이후 public 지울 것.
-
-    const float MINERAL_GAIN_COOL= 1f;   // 적이 다음 미네랄을 얻기 위해 필요한 시간
-    float _cumulativeMineralGainCool;    // 적이 다음 미네랄을 얻기 위해 필요한 시간을 계산하기위해 누적하는 시간.
-
-    bool _isStartDelayFinish;
-    const float START_DELAY = 10f; 
-    float _cumulativeStartDelay;
-
-
-
-    // 적 보유자원
+    // Properties
     public float EnemyMineral
     {
         get
@@ -41,11 +17,33 @@ public class EnemySpawnManager : MonoBehaviour
             _mineral = value;
         }
     }
-    float _mineral;
 
-  
-    // 유닛이 생성가능한지 확인하는 bool
-    public bool IsCanSpawnUnit => UnitList.TotalUnitCount() < EnemyUnitSpawner.MaxUnitCount;
+    public bool IsCanSpawnUnit => UnitList.TotalUnitCount() < EnemyUnitSpawner.MaxUnitCount; // 유닛이 생성가능한지 확인하는 bool
+
+
+    // Fields   
+    [SerializeField] TextMeshProUGUI EnemyMineralText;                  // For Test
+
+    public EnemySpawnedUnitList UnitList = new EnemySpawnedUnitList();  // 적이 현재 생성한 유닛의 목록을 관리
+
+    //참조
+    public EnemySpawnQueue EnemySpawnQueue;                             // 생산 예약 큐를 관리
+    public EnemyUnitSpawner EnemyUnitSpawner;                           // 유닛 생산
+
+    // 자원관련
+    public float BaseMineralGen;         // 초당 미네랄 획득량              
+    public float _cumlativeMineral;      // 누적된 미네랄 획득량. 적 본진이 3레벨 되기전까지 각 레벨마다 누적하며, 이 변수가
+                                         // 업그레이드 비용의 4배를 누적하면 적은 본진을 업그레이드하고 초기화. 테스트 이후 public 지울 것.
+
+    const float MINERAL_GAIN_COOL= 1f;   // 적이 다음 미네랄을 얻기 위해 필요한 시간
+    const float START_DELAY = 10f;       // 최초 인게임 진입후 10초 동안은 적 유닛 생성 x
+
+    float _cumulativeMineralGainCool;    // 적이 다음 미네랄을 얻기 위해 필요한 시간을 계산하기위해 누적하는 시간.
+    float _cumulativeStartDelay;         // START_DELAY 가 지나갔는지 체크하기 위한 float 변수
+    float _mineral;                      // 적 보유자원
+
+    bool _isStartDelayFinish;            // _cumulativeStartDelay < START_DELAY 이라면 true
+
 
     #region 싱글톤
     public static EnemySpawnManager Instance => _instance;
@@ -63,6 +61,7 @@ public class EnemySpawnManager : MonoBehaviour
     #endregion
 
 
+    // UnityLifeCycle
     private void Start()
     {
         EnemyMineral = 0;     // 최초에 적이 보유하는 미네랄 양. 0으로 조정.
@@ -112,7 +111,8 @@ public class EnemySpawnManager : MonoBehaviour
     }
 
 
-    // 테스트 메서드
+    // Methods
+    // 테스트 메서드. 버튼 클릭시 적이 일정량의 자원 획득
     public void OnTestGetMineral()
     {
         EnemyMineral += 500;

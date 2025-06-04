@@ -4,18 +4,16 @@ using UnityEngine.UI;
 
 public class PlayerSpawnQueueUI : MonoBehaviour
 {
-    [SerializeField] List<Image> _unitPortraits;
-    [SerializeField] Slider _spawnSlider;
-    [SerializeField] Sprite _defaultQueueSprite;
-
-    
-    PlayerSpawnQueue _spawnQueue;
-
-    Sprite _unitPortrait;
-
-    public int WaitingUnits;
+    // Fields
+    [SerializeField] List<Image> _unitPortraits; // 유닛 초상화 저장해둔 리스트
+    [SerializeField] Slider _spawnSlider;        // 스폰대기시간을 가시화한 슬라이더
+    [SerializeField] Sprite _defaultQueueSprite; // 아무 유닛도 없는 대기 칸의 스프라이트
+    Sprite _unitPortrait;                        // 다음에 생산대기 시킬 유닛의 초상화
+    public int WaitingUnits;                     // 대기중인 유닛
+    const int MAX_WAITING_UNITS = 5;             // 최대로 큐에 넣을 수 있는 유닛 수
 
 
+    // UnityLifeCycle
     private void Awake()
     {
         _spawnSlider.value = 0;
@@ -27,6 +25,7 @@ public class PlayerSpawnQueueUI : MonoBehaviour
 
     }
 
+    // Methods
     public void SetSlider(float value)
     {
         _spawnSlider.value = value;
@@ -37,7 +36,7 @@ public class PlayerSpawnQueueUI : MonoBehaviour
         //농부
         if (index == 0)
         {
-            if (PlayerSpawnManager.Instance.SpawnQueueUI.WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnFarmingUnit
+            if (WaitingUnits < MAX_WAITING_UNITS && PlayerSpawnManager.Instance.IsCanSpawnFarmingUnit
                     && PlayerSpawnManager.Instance.Mineral - PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost >= 0)
             {
                 PlayerSpawnManager.Instance.Mineral -= PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost;
@@ -54,7 +53,7 @@ public class PlayerSpawnQueueUI : MonoBehaviour
         //전투 유닛
         else
         {
-            if (PlayerSpawnManager.Instance.SpawnQueueUI.WaitingUnits < 5 && PlayerSpawnManager.Instance.IsCanSpawnUnit
+            if (WaitingUnits < MAX_WAITING_UNITS && PlayerSpawnManager.Instance.IsCanSpawnUnit
                  && PlayerSpawnManager.Instance.Mineral - PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost >= 0)
             {
                 PlayerSpawnManager.Instance.Mineral -= PlayerSpawnManager.Instance.PlayerUnitSpawner.Units[index].Cost;

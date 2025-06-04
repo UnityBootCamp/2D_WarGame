@@ -2,8 +2,7 @@
 
 public class PlayerSpawnedUnitList : SpawnedUnitList<PlayerUnit>
 {
-
-
+    // Methods
     public int TotalUnitCount()
     {
         int res = 0;

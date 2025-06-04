@@ -1,13 +1,11 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemySpawnQueue : SpawnQueue<EnemyUnitData>
 {
-
+    // UnityLifeCycle
     private void Update()
     {
-
         if (GameManager.Instance.IsGameOver)
             return;
 
@@ -15,11 +13,10 @@ public class EnemySpawnQueue : SpawnQueue<EnemyUnitData>
         {
             StartCoroutine(C_SpawnCool());
         }
-
     }
 
    
-
+    // Methods
     IEnumerator C_SpawnCool()
     {
         float spawnCool = 0f;
@@ -35,9 +32,5 @@ public class EnemySpawnQueue : SpawnQueue<EnemyUnitData>
 
         _queue.Dequeue();
         _nextSpawnUnit = null;
-
-
     }
-
-
 }

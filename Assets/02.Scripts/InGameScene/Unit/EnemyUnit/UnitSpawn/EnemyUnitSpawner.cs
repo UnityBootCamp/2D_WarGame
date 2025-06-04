@@ -1,23 +1,19 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
 public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
 {
-
-
-    public EnemyUnit PrevEnemyUnit;                           // 선행 유닛 참조
-
-
-    // 생성관련
+    // Fields
+    public EnemyUnit PrevEnemyUnit;                     // 현재 유닛의 선행 유닛 참조
     Vector3 _spawnPos = new Vector3(19f, -3.1f, 0f);    // 생성 위치
-    int _totalWeight;                                   // 총 가중치
+    int _totalWeight;                                   // 현재 생성가능한 적 유닛들의 총 가중치 합
+    bool _isOnSpawnCool;                                // 스폰쿨이 지났는지 확인하는 bool
+    int _howManyUnitOpen;                               // 현재 해금된 적 유닛 수
 
-    bool _isOnSpawnCool;
 
-    int _howManyUnitOpen;                         // 현재 해금된 적 유닛 수
-
+    // UnityLifeCycle
     protected override void Start()
     {
         base.Start();
@@ -34,9 +30,7 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
         {
             _totalWeight += _units[i].Weight;
         }
-
     }
-
 
     private void Update()
     {
@@ -47,11 +41,8 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
         if (EnemySpawnManager.Instance.EnemyMineral>= Units[0].Cost&& _isOnSpawnCool && EnemySpawnManager.Instance.IsCanSpawnUnit)
         {
             EnemyUnitData randomEnemyUnitData = null;
-
-            
             randomEnemyUnitData = ChooseRandomUnit(); 
 
-               
             //  적절한 유닛 할당이 안되면
             if(CanSpawn(randomEnemyUnitData) == false || randomEnemyUnitData == null)
             {
@@ -60,15 +51,13 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
             }
 
             EnemySpawnManager.Instance.UnitList.UnitsCount[(int)randomEnemyUnitData.UnitType]++;
-
-
             EnemySpawnManager.Instance.EnemyMineral -= randomEnemyUnitData.Cost;
             EnemySpawnManager.Instance.EnemySpawnQueue.UnitEnqueue(randomEnemyUnitData);
-            
         }
-
     }
 
+    
+    // Methods
     IEnumerator C_SpawnCool()
     {
         _isOnSpawnCool = false;
@@ -83,6 +72,10 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
         _totalWeight += _units[_howManyUnitOpen - 1].Weight;
     }
 
+    public void UpgradeMaxUnitCount()
+    {
+        _maxUnitCount += 5;
+    }
 
     public bool CanSpawn(EnemyUnitData enemyUnitData)
     {
@@ -110,7 +103,6 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
             }
         }
         return null;
-
     }
 
     public void Spawn(EnemyUnitType unitType)
@@ -141,10 +133,5 @@ public class EnemyUnitSpawner : UnitSpawner<EnemyUnitData>
 
         // 이전 생성 유닛을 갱신
         PrevEnemyUnit = spawnedUnit;
-
-
     }
-
-
-
 }

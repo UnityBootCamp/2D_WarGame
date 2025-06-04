@@ -16,7 +16,7 @@ MonoBehaviour:
   <Cost>k__BackingField: 5000
   <SpawnCoolDown>k__BackingField: 30
   <Hp>k__BackingField: 300
-  <AttackForce>k__BackingField: 50
+  <AttackForce>k__BackingField: 40
   <MoveSpeed>k__BackingField: 1
   <AttackDelay>k__BackingField: 5
   <UnitType>k__BackingField: 4

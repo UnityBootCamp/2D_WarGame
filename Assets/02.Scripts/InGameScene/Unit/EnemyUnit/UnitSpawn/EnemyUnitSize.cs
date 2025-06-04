@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class EnemyUnitSize : UnitSize
 {
+    // Fields
     [SerializeField] GameObject[] _enemyUnits;
+    [HideInInspector] public static Vector3[] EnemyUnitSizes;
 
-    [HideInInspector] public static Vector3[] EnemyUnitSizes ;
 
-
+    // UnityLifeCycle
     private void Awake()
     {
         EnemyUnitSizes = new Vector3[_enemyUnits.Length];
@@ -16,6 +17,4 @@ public class EnemyUnitSize : UnitSize
             EnemyUnitSizes[i] = CalcSpriteScale(_enemyUnits[i]);
         }
     }
-
-
 }
