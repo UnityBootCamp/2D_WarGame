@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 04.DemonKnight
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 3761644884714884663, guid: f280e76add5d1154ab7dac8ceb4c80a5, type: 3}
-  <Cost>k__BackingField: 3000
+  <Cost>k__BackingField: 4000
   <SpawnCoolDown>k__BackingField: 30
   <Hp>k__BackingField: 120
   <AttackForce>k__BackingField: 15

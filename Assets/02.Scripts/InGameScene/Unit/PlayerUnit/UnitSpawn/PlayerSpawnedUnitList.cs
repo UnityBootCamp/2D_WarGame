@@ -1,5 +1,3 @@
-
-
 public class PlayerSpawnedUnitList : SpawnedUnitList<PlayerUnit>
 {
     // Methods

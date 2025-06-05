@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
@@ -9,18 +10,34 @@ public class SettingUI : MonoBehaviour
 
 
     // Fields
+    // Panels
     [SerializeField] GameObject _soundPanel;
     [SerializeField] GameObject _homePanel;
     Stack<GameObject> _openedPanel;
 
- 
+    // Buttons
+    [SerializeField] Button _restartButton;
+    [SerializeField] Button _settingButton;
+    [SerializeField] Button _homeButton;
+    [SerializeField] Button _homeConfirmButton;
+    [SerializeField] Button _homeExitButton;
+    [SerializeField] Button _soundExitButton;
+
+
     // Methods
-    public void OnStart()
+    // 초기화
+    public void Init()
     {
-        SoundManager.Instance.ClickUI();
         _soundPanel.gameObject.SetActive(false);
         _homePanel.gameObject.SetActive(false);
         _openedPanel = new Stack<GameObject>(4);
+
+        _restartButton.onClick.AddListener(OnRestartButton);
+        _settingButton.onClick.AddListener(OnSettingButton);
+        _homeButton.onClick.AddListener(OnHomeButton);
+        _homeConfirmButton.onClick.AddListener(OnHomeConfirmButton);
+        _homeExitButton.onClick.AddListener(OnExitButton);
+        _soundExitButton.onClick.AddListener(OnExitButton);
     }
 
     // 세팅 버튼 누를 시

@@ -18,6 +18,7 @@ public class PlayerHome : MonoBehaviour
         }
     }
     public Vector3 PlayerHomeSize => _playerHomeSize;
+    public float PlayerHomeHp => _hp;
 
 
     // Fields

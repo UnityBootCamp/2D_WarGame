@@ -39,29 +39,35 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        _instance = this;
 
-        _sceneChangePanel.gameObject.SetActive(true);   // 로딩을 위한 화면 암흑처리
-        _settingPanel.OnStart();
-        _explainPanel.OnStart();
-        
+        IsGameOver = false;                                             
+        DifficultyData = DifficultyDatas[PlayerPrefs.GetInt("Difficulty")]; // 난이도 정보 받아옴
+
+
+        // 로딩을 위한 화면 전환 연출
+        _sceneChangePanel.gameObject.SetActive(true);  
         StartCoroutine(C_SceneChange());
 
 
-        _instance = this;
-        IsGameOver = false;
-        DifficultyData = DifficultyDatas[PlayerPrefs.GetInt("Difficulty")];
 
-        // 패널 비활성화
+        // 패널 초기화 및 비활성화
+        _settingPanel.Init();
+        _explainPanel.Init();
         _settingPanel.gameObject.SetActive(false);
+
         _clearPanel.SetActive(false);
         _youLosePanel.SetActive(false);
     }
 
+    // Methods 
+    // 최초 게임시작. UI 설명이 끝나면 호출됨.
     public void GameStart()
     {
         Time.timeScale = 1;
     }
 
+    // 세팅 패널 조작으로 인한 게임 일시정지 및 다시 시작
     public void Restart()
     {
         Time.timeScale = 1;
@@ -77,13 +83,13 @@ public class GameManager : MonoBehaviour
     }
 
     // 점수 계산 메서드
-    public int calcScore()
+    public float calcScore()
     {
-        return TotalKill + TotalSpawn;
+        return ((TotalKill * 50 - TotalSpawn * 30) + UnitAttackManager.Instance.PlayerHome.PlayerHomeHp) * DifficultyData.DifficultyCoefficient;
     }
 
     // 점수를 기반으로 플레이 랭크를 계산하는 메서드
-    public string CalcRank(int score, out Color color)
+    public string CalcRank(float score, out Color color)
     {
         if(0<score && score < 1000)
         {
@@ -134,7 +140,7 @@ public class GameManager : MonoBehaviour
 
         Color rankColor;
 
-        earnedRank.text = CalcRank(calcScore() + 3000, out rankColor);
+        earnedRank.text = CalcRank(calcScore() + 1500, out rankColor);
         earnedRank.color = rankColor;
         totalSpawnUnit.text = "Total Spawn Unit :  " + TotalSpawn;
         totalKillUnit.text = "Total Kill Unit :  " + TotalKill;
@@ -153,7 +159,7 @@ public class GameManager : MonoBehaviour
 
         Color rankColor;
 
-        earnedRank.text = CalcRank(calcScore() + 3000, out rankColor);
+        earnedRank.text = CalcRank(calcScore(), out rankColor);
         earnedRank.color = rankColor;
         totalSpawnUnit.text = "Total Spawn Unit :  " + TotalSpawn;
         totalKillUnit.text = "Total Kill Unit :  " + TotalKill;
@@ -180,6 +186,7 @@ public class GameManager : MonoBehaviour
 
         _sceneChangePanel.gameObject.SetActive(false);
         _sceneChangePanel.color = Color.black;
-        Time.timeScale = 0;
+
+        Time.timeScale = 0;  // 씬 전환 끝나면 UI 설명 읽어볼 수 있도록 게임 일시 정지
     }
 }

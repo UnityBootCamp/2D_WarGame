@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: ea777a0fb1c39f442a9d62f09efbc9b3
+guid: 957835ba0ab59924cb8bbd6ae59b50a7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8961090413319157468
-    second: Meteor_0
+      213: 3972488667177137343
+    second: Meteor 1_0
   - first:
-      213: -2967113423327029113
-    second: Meteor_1
+      213: 6254507034211598025
+    second: Meteor 1_1
   - first:
-      213: 2182055113893026377
-    second: Meteor_2
+      213: -3818133747208983119
+    second: Meteor 1_2
   - first:
-      213: -6744407381781148267
-    second: Meteor_3
+      213: 4399134802148294170
+    second: Meteor 1_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,89 +122,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Meteor_0
+      name: Meteor 1_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 99
-        width: 214
-        height: 912
+        x: 47
+        y: 774
+        width: 920
+        height: 207
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cd6fb06c0403c5c70800000000000000
-      internalID: 8961090413319157468
+      spriteID: fb4bb59456d112730800000000000000
+      internalID: 3972488667177137343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Meteor_1
+      name: Meteor 1_1
       rect:
         serializedVersion: 2
-        x: 235
-        y: 88
-        width: 238
-        height: 883
+        x: 87
+        y: 511
+        width: 873
+        height: 202
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7889c4adf02b2d6d0800000000000000
-      internalID: -2967113423327029113
+      spriteID: 9ce3d5382097cc650800000000000000
+      internalID: 6254507034211598025
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Meteor_2
+      name: Meteor 1_2
       rect:
         serializedVersion: 2
-        x: 511
-        y: 64
-        width: 202
-        height: 873
+        x: 53
+        y: 266
+        width: 883
+        height: 207
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94a1be7a097384e10800000000000000
-      internalID: 2182055113893026377
+      spriteID: 1bd6da41693430bc0800000000000000
+      internalID: -3818133747208983119
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Meteor_3
+      name: Meteor 1_3
       rect:
         serializedVersion: 2
-        x: 774
-        y: 57
-        width: 248
-        height: 920
+        x: 13
+        y: 43
+        width: 912
+        height: 174
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 59d896c383d0762a0800000000000000
-      internalID: -6744407381781148267
+      spriteID: a1e7b118bcddc0d30800000000000000
+      internalID: 4399134802148294170
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6fc6fdbebc4f2554ea31aab67dcab4f6
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Meteor_0: 8961090413319157468
-      Meteor_1: -2967113423327029113
-      Meteor_2: 2182055113893026377
-      Meteor_3: -6744407381781148267
+      Meteor 1_0: 3972488667177137343
+      Meteor 1_1: 6254507034211598025
+      Meteor 1_2: -3818133747208983119
+      Meteor 1_3: 4399134802148294170
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

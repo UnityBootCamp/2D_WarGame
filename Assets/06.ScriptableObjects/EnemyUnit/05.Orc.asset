@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 05.Orc
   m_EditorClassIdentifier: 
   <UnitPrefab>k__BackingField: {fileID: 8305651861530718594, guid: 76779a8f9f9d9ed429c19c1a249cacda, type: 3}
-  <Cost>k__BackingField: 5000
+  <Cost>k__BackingField: 7000
   <SpawnCoolDown>k__BackingField: 30
-  <Hp>k__BackingField: 300
+  <Hp>k__BackingField: 450
   <AttackForce>k__BackingField: 40
   <MoveSpeed>k__BackingField: 1
-  <AttackDelay>k__BackingField: 5
+  <AttackDelay>k__BackingField: 3
   <UnitType>k__BackingField: 4
   <Weight>k__BackingField: 20

@@ -1,17 +1,14 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DifficultyPanel : MonoBehaviour
 {
-    [SerializeField] Button _exitButton;
+    [SerializeField] Button _difficultyExitButton;
     [SerializeField] Button[] _difficultyButtons;
-    [SerializeField] Image _howToPlayPanel;
 
     private void Awake()
     {
-        _howToPlayPanel.gameObject.SetActive(false);
-        _exitButton.onClick.AddListener(OnClickExitButton);
+        _difficultyExitButton.onClick.AddListener(OnClickExitButton);
 
         for(int i = 0; i<_difficultyButtons.Length; i++)
         {
@@ -22,17 +19,16 @@ public class DifficultyPanel : MonoBehaviour
 
             _difficultyButtons[i].onClick.AddListener(() => OnClickDifficultyButton(index));
         }
-
     }
 
     void OnClickDifficultyButton(int index)
     {
         TitleSoundManager.Instance.ClickUI();
         PlayerPrefs.SetInt("Difficulty", index);
-        Debug.Log(PlayerPrefs.GetInt("Difficulty"));
+
+        TitleManager.Instance.HowToPlayPanel.gameObject.SetActive(true);
 
         gameObject.SetActive(false);
-        _howToPlayPanel.gameObject.SetActive(true);
 
     }
 

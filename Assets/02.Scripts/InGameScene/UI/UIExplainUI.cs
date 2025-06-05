@@ -9,7 +9,7 @@ public class UIExplainUI : MonoBehaviour
 
     
     // Methods
-    public void OnStart()
+    public void Init()
     {
         gameObject.SetActive(true);
 

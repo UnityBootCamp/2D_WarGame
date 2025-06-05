@@ -275,12 +275,12 @@ public class PlayerUnit : Unit<PlayerUnitData>
             if (UnitAttackManager.Instance.EnemyFirstUnit != null)
             {
                 UnitAttackManager.Instance.LongRangeAttack.SummonMeteor
-                    (_attackDelay, UnitAttackManager.Instance.EnemyFirstUnit.gameObject.transform.parent.gameObject.transform.position);
+                    (_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.EnemyFirstUnit.gameObject.transform.parent.gameObject.transform.position);
             }
             // 적의 선봉 유닛이 없으면 적의 본진 위에 메테오 소환
             else if (UnitAttackManager.Instance.EnemyFirstUnit == null)
             {
-                UnitAttackManager.Instance.LongRangeAttack.SummonMeteor(_attackDelay, UnitAttackManager.Instance.EnemyHome.transform.position);
+                UnitAttackManager.Instance.LongRangeAttack.SummonMeteor(_attackDelay, transform.parent.transform.position, UnitAttackManager.Instance.EnemyHome.transform.position);
             }
         }
 
